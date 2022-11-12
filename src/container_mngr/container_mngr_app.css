@@ -2,7 +2,7 @@ Screen {
     layout: vertical;
 }
 
-.box {
-    height: 1fr;
-    border: solid green
-}
+/* Static {
+    background: darkblue;
+    border: heavy double white
+} */

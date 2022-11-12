@@ -5,6 +5,7 @@ name = "pypi"
 
 [packages]
 textual = "*"
+docker = "*"
 
 [dev-packages]
 flake8 = "*"
