@@ -21,6 +21,11 @@ class RuntimePanel(Widget):
     }
 
     def compose(self) -> ComposeResult:
+        content = self._render_content()
+
+        yield Static(Panel(content, title="Runtime"))
+
+    def _render_content(self):
         try:
             info = get_runtime_info()
             return self._render_runtime_info(info)
@@ -37,15 +42,10 @@ class RuntimePanel(Widget):
                 value, Text(text=f"{runtime_info[key]}", style="Bold")
             )
 
-        yield Static(Panel(property_table, title="Runtime"))
+        return property_table
 
     def _render_error(self, ex: ContainerRuntimeAPIError):
-        yield Static(
-            Panel(
-                Text(
-                    f"Error while pulling runtime information: {ex.inner_error}",
-                    style="Bold Red",
-                ),
-                title="Runtime",
-            )
+        return Text(
+            f"Error while pulling runtime information: {ex.inner_error}",
+            style="Bold Red",
         )

@@ -11,3 +11,13 @@ def get_runtime_info() -> dict[str, str]:
         raise ContainerRuntimeAPIError(
             "Error while pulling runtime information from Docker API", ex
         )
+
+
+def get_images():
+    try:
+        client = DockerClient.from_env()
+        return client.images.list()
+    except APIError as ex:
+        raise ContainerRuntimeAPIError(
+            "Error while pulling list of images from Docker API", ex
+        )

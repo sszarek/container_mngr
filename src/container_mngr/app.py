@@ -2,6 +2,7 @@ from textual.app import App, ComposeResult
 from textual.widgets import Static, Footer
 from rich.panel import Panel
 from .components.runtime import RuntimePanel
+from .components.images import ImagesPanel
 
 
 class ContainerMngrApp(App):
@@ -14,14 +15,10 @@ class ContainerMngrApp(App):
 
     def compose(self) -> ComposeResult:
         yield RuntimePanel()
+        yield ImagesPanel()
         yield Static(
             Panel(
                 "Hello", title="Containers"
-            )
-        )
-        yield Static(
-            Panel(
-                "World", title="Runtime"
             )
         )
         yield Footer()
