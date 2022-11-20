@@ -25,11 +25,11 @@ class ImagesPanel(Widget):
 
         for image in images:
             image_table.add_row(
-                "".join(image.attrs.get("RepoTags")),
-                "latest",
-                image.short_id,
-                image.attrs.get("Created"),
-                str(image.attrs.get("Size")),
+                image.repository,
+                image.tag,
+                image.image_id,
+                image.created,
+                str(image.size_bytes),
             )
 
         yield Static(Panel(image_table, title="Images"))

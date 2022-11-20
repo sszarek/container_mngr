@@ -16,11 +16,6 @@ class ContainerMngrApp(App):
     def compose(self) -> ComposeResult:
         yield RuntimePanel()
         yield ImagesPanel()
-        yield Static(
-            Panel(
-                "Hello", title="Containers"
-            )
-        )
         yield Footer()
 
     def toggle_runtime_info(self) -> None:
