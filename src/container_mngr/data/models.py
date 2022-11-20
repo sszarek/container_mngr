@@ -16,7 +16,7 @@ class ContainerRuntimeInfo:
 
 @dataclass
 class Image:
-    repository: str
+    name: str
     tag: str
     image_id: str
     created: datetime

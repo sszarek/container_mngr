@@ -25,7 +25,7 @@ class ImagesPanel(Widget):
 
         for image in images:
             image_table.add_row(
-                image.repository,
+                image.name,
                 image.tag,
                 image.image_id,
                 image.created,

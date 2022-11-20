@@ -1,4 +1,3 @@
-from datetime import datetime
 from docker import DockerClient
 from docker.models.images import Model
 from docker.errors import APIError
@@ -39,10 +38,11 @@ def get_images() -> list[Image]:
 
 
 def _map_image(raw_image: Model) -> Image:
+    repo_tags = raw_image.attrs.get("RepoTags")[0].split(":")
     return Image(
-        repository="".join(raw_image.attrs.get("RepoTags")),
-        tag="latest",
+        name=repo_tags[0],
+        tag=repo_tags[1],
         image_id=raw_image.short_id,
         created=raw_image.attrs.get("Created"),
-        size_bytes=raw_image.attrs.get("Size"),
+        size_bytes="{:.2f} MB".format(float(raw_image.attrs.get("Size"))/1000000),
     )
