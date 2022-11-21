@@ -1,6 +1,5 @@
 from textual.app import App, ComposeResult
-from textual.widgets import Static, Footer
-from rich.panel import Panel
+from textual.widgets import Footer
 from .components.runtime import RuntimePanel
 from .components.images import ImagesPanel
 

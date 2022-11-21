@@ -2,7 +2,10 @@ Screen {
     layout: vertical;
 }
 
-/* Static {
-    background: darkblue;
-    border: heavy double white
-} */
+RuntimePanel {
+    height: auto;
+}
+
+ImagesPanel {
+    height: auto;
+}
