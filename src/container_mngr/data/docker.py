@@ -2,7 +2,23 @@ from docker import DockerClient
 from docker.models.images import Model
 from docker.errors import APIError
 from .models import ContainerRuntimeInfo, Image
-from .errors import ContainerRuntimeAPIError
+from .errors import ContainerRuntimeAPIError, ModelMappingError
+
+required_info_keys = [
+    "NCPU",
+    "Architecture",
+    "KernelVersion",
+    "Name",
+    "OperatingSystem",
+    "OSType",
+    "OSVersion",
+    "ServerVersion",
+]
+
+
+def _find_missing_keys(required, actual):
+    missing_fields = list(set(required).difference(actual))
+    return sorted(missing_fields)
 
 
 def get_runtime_info() -> ContainerRuntimeInfo:
@@ -10,8 +26,16 @@ def get_runtime_info() -> ContainerRuntimeInfo:
         client = DockerClient.from_env()
         raw_data = client.info()
 
+        missing = _find_missing_keys(required_info_keys, raw_data)
+        if len(missing) > 0:
+            missing_formated = ", ".join(missing)
+            raise ModelMappingError(
+                "Error mapping from Docker API response."
+                f" Missing expected fields: {missing_formated}"
+            )
+
         return ContainerRuntimeInfo(
-            cpu_count=raw_data["NCPU"],
+            cpu_count=int(raw_data["NCPU"]),
             cpu_architecture=raw_data["Architecture"],
             kernel_version=raw_data["KernelVersion"],
             name=raw_data["Name"],
@@ -44,5 +68,5 @@ def _map_image(raw_image: Model) -> Image:
         tag=repo_tags[1],
         image_id=raw_image.short_id,
         created=raw_image.attrs.get("Created"),
-        size_bytes="{:.2f} MB".format(float(raw_image.attrs.get("Size"))/1000000),
+        size_bytes="{:.2f} MB".format(float(raw_image.attrs.get("Size")) / 1000000),
     )
