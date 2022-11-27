@@ -24,12 +24,3 @@ class ContainerMngrApp(App):
 
     def on_mount(self) -> None:
         self.switch_screen("containers")
-
-    def toggle_runtime_info(self) -> None:
-        pass
-
-    def toggle_containers(self) -> None:
-        pass
-
-    def start_new_container(self) -> None:
-        pass
