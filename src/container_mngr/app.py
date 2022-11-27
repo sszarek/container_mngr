@@ -2,6 +2,7 @@ from textual.app import App, ComposeResult
 from textual.widgets import Footer
 from .components.runtime import RuntimePanel
 from .components.images import ImagesPanel
+from .components.containers import ContainersPanel
 
 
 class ContainerMngrApp(App):
@@ -13,8 +14,9 @@ class ContainerMngrApp(App):
     ]
 
     def compose(self) -> ComposeResult:
-        yield RuntimePanel()
+        yield ContainersPanel()
         yield ImagesPanel()
+        yield RuntimePanel()
         yield Footer()
 
     def toggle_runtime_info(self) -> None:

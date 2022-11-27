@@ -1,7 +1,8 @@
 from docker import DockerClient
-from docker.models.images import Model
+from docker.models.images import Image as DockerImage
+from docker.models.containers import Container as DockerContainer
 from docker.errors import APIError
-from .models import ContainerRuntimeInfo, Image
+from .models import ContainerRuntimeInfo, Image, Container, Port
 from .errors import ContainerRuntimeAPIError, ModelMappingError
 
 required_info_keys = [
@@ -61,7 +62,18 @@ def get_images() -> list[Image]:
         )
 
 
-def _map_image(raw_image: Model) -> Image:
+def get_containers() -> list[Container]:
+    try:
+        client = DockerClient.from_env()
+        raw_container_list = client.containers.list()
+        return map(_map_container, raw_container_list)
+    except APIError as ex:
+        raise ContainerRuntimeAPIError(
+            "Error while pulling list of containers from Docker API", ex
+        )
+
+
+def _map_image(raw_image: DockerImage) -> Image:
     repo_tags = raw_image.attrs.get("RepoTags")[0].split(":")
     return Image(
         name=repo_tags[0],
@@ -69,4 +81,19 @@ def _map_image(raw_image: Model) -> Image:
         image_id=raw_image.short_id,
         created=raw_image.attrs.get("Created"),
         size_bytes="{:.2f} MB".format(float(raw_image.attrs.get("Size")) / 1000000),
+    )
+
+
+def _map_container(raw_container: DockerContainer) -> Container:
+    image = " ".join(raw_container.image.tags)
+    return Container(
+        id=raw_container.short_id,
+        name=raw_container.name,
+        status=raw_container.status,
+        image=image,
+        command=raw_container.attrs["Path"],
+        ports=[
+            Port(container=key, host=value)
+            for key, value in raw_container.ports.items()
+        ],
     )

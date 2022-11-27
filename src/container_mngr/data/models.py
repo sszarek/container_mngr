@@ -21,3 +21,19 @@ class Image:
     image_id: str
     created: datetime
     size_bytes: float
+
+
+@dataclass
+class Port:
+    container: str
+    host: str
+
+
+@dataclass
+class Container:
+    name: str
+    id: str
+    status: str
+    image: str
+    command: str
+    ports: list[Port]

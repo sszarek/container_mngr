@@ -9,3 +9,7 @@ RuntimePanel {
 ImagesPanel {
     height: auto;
 }
+
+ContainersPanel {
+    height: auto;
+}

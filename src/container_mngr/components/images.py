@@ -1,6 +1,7 @@
 from textual.app import ComposeResult
 from textual.widget import Widget
 from textual.widgets import Static
+from rich import box
 from rich.panel import Panel
 from rich.table import Table
 from ..data.docker import get_images
@@ -13,11 +14,9 @@ class ImagesPanel(Widget):
         images = get_images()
 
         image_table = Table(
-            box=None,
+            box=box.SIMPLE_HEAVY,
             show_header=True,
-            expand=False,
-            pad_edge=False,
-            show_edge=False,
+            header_style="bold bright_blue"
         )
 
         for header in self._HEADERS:
