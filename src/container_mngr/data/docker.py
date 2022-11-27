@@ -66,7 +66,7 @@ def get_containers() -> list[Container]:
     try:
         client = DockerClient.from_env()
         raw_container_list = client.containers.list()
-        return map(_map_container, raw_container_list)
+        return list(map(_map_container, raw_container_list))
     except APIError as ex:
         raise ContainerRuntimeAPIError(
             "Error while pulling list of containers from Docker API", ex

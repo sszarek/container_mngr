@@ -3,6 +3,7 @@ from textual.widget import Widget
 from textual.widgets import Static
 from rich.table import Table
 from rich.panel import Panel
+from rich.text import Text
 from rich import box
 from ..data.docker import get_containers
 
@@ -13,10 +14,20 @@ class ContainersPanel(Widget):
     def compose(self) -> ComposeResult:
         containers = get_containers()
 
+        renderable = (
+            self._render_no_containers_info()
+            if len(containers) == 0
+            else self._render_containers_table(containers)
+        )
+
+        yield Static(Panel(renderable, title="Containers"))
+
+    def _render_no_containers_info(self):
+        return Text(text="No containers running", style="bold blue", justify="center")
+
+    def _render_containers_table(self, containers):
         container_table = Table(
-            box=box.SIMPLE_HEAVY,
-            show_header=True,
-            header_style="bold bright_blue"
+            box=box.SIMPLE_HEAVY, show_header=True, header_style="bold bright_blue"
         )
 
         for header in self._HEADERS:
@@ -34,4 +45,4 @@ class ContainersPanel(Widget):
                 container.name,
             )
 
-        yield Static(Panel(container_table, title="Containers"))
+        return container_table
