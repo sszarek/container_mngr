@@ -1,6 +1,6 @@
 from textual.app import ComposeResult
 from textual.widget import Widget
-from textual.widgets import Static
+from textual.widgets import Static, Footer
 from rich.table import Table
 from rich.panel import Panel
 from rich import box
