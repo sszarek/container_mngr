@@ -41,7 +41,7 @@ class RuntimePanel(Widget):
         self._render_table_row(table, "CPU Count", runtime_info.cpu_count)
         self._render_table_row(table, "Architecture", runtime_info.cpu_architecture),
         self._render_table_row(table, "Name", runtime_info.name)
-        self._render_table_row(table, "ServerVersion", runtime_info.server_version)
+        self._render_table_row(table, "Runtime Version", runtime_info.server_version)
         self._render_table_row(table, "Kernel Version", runtime_info.kernel_version)
         self._render_table_row(table, "OS Type", runtime_info.os_type)
         self._render_table_row(table, "Operating System", runtime_info.os)
