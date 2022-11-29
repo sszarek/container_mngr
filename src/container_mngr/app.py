@@ -9,18 +9,18 @@ class ContainerMngrApp(App):
     TITLE = "Container Manager"
     BINDINGS = [
         ("f1", "app.switch_screen('containers')", "Containers"),
-        ("f2", "app.switch_screen('runtime')", "Runtime Info"),
-        ("f3", "app.switch_screen('images')", "Images"),
+        ("f2", "app.switch_screen('images')", "Images"),
+        ("f3", "app.switch_screen('runtime')", "Runtime Info"),
         Binding("ctrl+c,ctrl+q", "app.quit", "Quit", show=True)
     ]
     SCREENS = {
-        "runtime": RuntimeScreen(),
-        "images": ImagesScreen(),
-        "containers": ContainersScreen()
+        "runtime": RuntimeScreen,
+        "images": ImagesScreen,
+        "containers": ContainersScreen
     }
 
     def compose(self) -> ComposeResult:
         yield Footer()
 
-    def on_mount(self) -> None:
-        self.switch_screen("containers")
+    async def on_mount(self) -> None:
+        await self.push_screen("containers")

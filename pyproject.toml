@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "container-mngr"
+version = "0.0.1"
+description = "Simple console application for managing Docker containers"
+authors = ["Stefan Szarek <stefan.szarek@gmail.com>"]
+readme = "README.md"
+packages = [{include = "src/container_mngr"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+textual = "^0.5.0"
+docker = "^6.0.1"
+pypiwin32 = {version = "^223", platform = "win32"}
+
+[tool.poetry.group.dev.dependencies]
+flake8 = "^6.0.0"
+black = "^22.10.0"
+pytest = "^7.2.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
