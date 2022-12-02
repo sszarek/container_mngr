@@ -27,8 +27,8 @@ class ImagesPanel(Widget):
                 image.name,
                 image.tag,
                 image.image_id,
-                image.created,
-                str(image.size_bytes),
+                str(image.created),
+                "{:.2f} MB".format(float(image.size_bytes) / 1000000),
             )
 
         yield Static(Panel(image_table, title="Images"))

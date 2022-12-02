@@ -16,4 +16,6 @@ jobs:
           python-version: ${{ matrix.python-version }}
           cache: 'poetry'
       - run: poetry install
-      - run: poetry run pytest
+      - run: make lint
+      - run: make type-check
+      - run: make test

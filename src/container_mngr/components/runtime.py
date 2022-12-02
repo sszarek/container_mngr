@@ -38,7 +38,7 @@ class RuntimePanel(Widget):
             box=None, show_header=False, expand=False, pad_edge=False, show_edge=False
         )
 
-        self._render_table_row(table, "CPU Count", runtime_info.cpu_count)
+        self._render_table_row(table, "CPU Count", str(runtime_info.cpu_count))
         self._render_table_row(table, "Architecture", runtime_info.cpu_architecture),
         self._render_table_row(table, "Name", runtime_info.name)
         self._render_table_row(table, "Runtime Version", runtime_info.server_version)
@@ -57,5 +57,5 @@ class RuntimePanel(Widget):
 
     def _render_table_row(self, table: Table, header: str, value: str):
         table.add_row(
-            Text(text=str(header), style="bold bright_blue"), Text(text=str(value))
+            Text(text=header, style="bold bright_blue"), Text(text=value)
         )
