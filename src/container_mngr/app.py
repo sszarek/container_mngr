@@ -11,12 +11,12 @@ class ContainerMngrApp(App):
         ("f1", "app.switch_screen('containers')", "Containers"),
         ("f2", "app.switch_screen('images')", "Images"),
         ("f3", "app.switch_screen('runtime')", "Runtime Info"),
-        Binding("ctrl+c,ctrl+q", "app.quit", "Quit", show=True)
+        Binding("ctrl+c,ctrl+q", "app.quit", "Quit", show=True),
     ]
     SCREENS = {
         "runtime": RuntimeScreen,
         "images": ImagesScreen,
-        "containers": ContainersScreen
+        "containers": ContainersScreen,
     }
 
     def compose(self) -> ComposeResult:

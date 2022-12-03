@@ -14,9 +14,7 @@ class ImagesPanel(Widget):
         images = get_images()
 
         image_table = Table(
-            box=box.SIMPLE_HEAVY,
-            show_header=True,
-            header_style="bold bright_blue"
+            box=box.SIMPLE_HEAVY, show_header=True, header_style="bold bright_blue"
         )
 
         for header in self._HEADERS:

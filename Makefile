@@ -1,8 +1,11 @@
 test:
-	pytest tests/
+	poetry run pytest tests/
 
 lint:
-	flake8 src/
+	poetry run flake8 src/
+
+style-check:
+	poetry run black src/ --check
 
 type-check:
-	mypy src/container_mngr
+	poetry run mypy src/container_mngr

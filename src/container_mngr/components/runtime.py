@@ -56,6 +56,4 @@ class RuntimePanel(Widget):
         )
 
     def _render_table_row(self, table: Table, header: str, value: str):
-        table.add_row(
-            Text(text=header, style="bold bright_blue"), Text(text=value)
-        )
+        table.add_row(Text(text=header, style="bold bright_blue"), Text(text=value))
