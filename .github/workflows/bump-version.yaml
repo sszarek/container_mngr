@@ -1,3 +1,10 @@
+name: 'Bump version and publish'
+on:
+  push:
+    branches:
+      - "main"
+
+
 jobs:
   bump-version:
     environment: 'PyPI'
