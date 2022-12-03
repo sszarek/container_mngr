@@ -1,3 +1,13 @@
+## 0.2.0 (2022-12-03)
+
+### Feat
+
+- publish package to PyPI
+
+### Fix
+
+- remove depends from bump-version
+
 ## 0.1.2 (2022-12-03)
 
 ### Fix
