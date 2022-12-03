@@ -31,3 +31,6 @@ includes = "src"
 version = "0.1.0"
 update_changelog_on_bump = true
 annotated_tag = true
+version_files = [
+  "pyproject.toml:version"
+]
