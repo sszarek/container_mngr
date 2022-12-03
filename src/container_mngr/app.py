@@ -11,6 +11,7 @@ class ContainerMngrApp(App):
         ("f1", "app.switch_screen('containers')", "Containers"),
         ("f2", "app.switch_screen('images')", "Images"),
         ("f3", "app.switch_screen('runtime')", "Runtime Info"),
+        ("ctrl+r", "run_container", "Run container"),
         Binding("ctrl+c,ctrl+q", "app.quit", "Quit", show=True),
     ]
     SCREENS = {
