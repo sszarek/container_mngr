@@ -9,3 +9,8 @@ style-check:
 
 type-check:
 	poetry run mypy src/container_mngr
+
+publish:
+	poetry config pypi-token.pypi ${PYPI_TOKEN}
+	poetry build
+	poetry publish
