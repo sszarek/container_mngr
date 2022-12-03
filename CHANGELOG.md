@@ -1,3 +1,9 @@
+## 0.1.1 (2022-12-03)
+
+### Fix
+
+- **pyproject**: update poetry version
+
 ## 0.1.0 (2022-12-03)
 
 ### Feat
