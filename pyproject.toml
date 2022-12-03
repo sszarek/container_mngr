@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "container-mngr"
-version = "0.0.1"
+version = "0.1.1"
 description = "Simple console application for managing Docker containers"
 authors = ["Stefan Szarek <stefan.szarek@gmail.com>"]
 readme = "README.md"
@@ -32,5 +32,6 @@ version = "0.1.1"
 update_changelog_on_bump = true
 annotated_tag = true
 version_files = [
-  "pyproject.toml:version"
+  "pyproject.toml:version",
+  "src/container_mngr/__version__.py"
 ]
