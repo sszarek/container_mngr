@@ -14,3 +14,6 @@ publish:
 	poetry config pypi-token.pypi ${PYPI_TOKEN}
 	poetry build
 	poetry publish
+
+run:
+	python -m src.container_mngr
