@@ -37,6 +37,9 @@ class ImagesPanel(Widget):
         yield self._content
 
     def action_move_down(self) -> None:
+        if self._image_table.row_count == 0:
+            return
+
         if self._cur_idx >= 0:
             self._remove_row_highlight(self._cur_idx)
 
@@ -49,6 +52,9 @@ class ImagesPanel(Widget):
         self._content.refresh()
 
     def action_move_up(self) -> None:
+        if self._image_table.row_count == 0:
+            return
+
         if self._cur_idx >= 0:
             self._remove_row_highlight(self._cur_idx)
 
