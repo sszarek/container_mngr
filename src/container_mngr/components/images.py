@@ -52,7 +52,7 @@ class ImagesPanel(Widget):
         if self._cur_idx >= 0:
             self._remove_row_highlight(self._cur_idx)
 
-        if self._cur_idx == 0:
+        if self._cur_idx <= 0:
             self._cur_idx = self._image_table.row_count - 1
         else:
             self._cur_idx -= 1
@@ -64,4 +64,4 @@ class ImagesPanel(Widget):
         self._image_table.rows[row_idx].style = "black on white"
 
     def _remove_row_highlight(self, row_idx: int) -> None:
-        self._image_table.rows[row_idx].style = "none"
+        self._image_table.rows[row_idx].style = None
