@@ -1,5 +1,5 @@
 test:
-	poetry run pytest tests/
+	poetry run pytest --cov=src/container_mngr/ tests/
 
 lint:
 	poetry run flake8 src/
