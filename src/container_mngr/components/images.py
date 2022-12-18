@@ -29,7 +29,7 @@ class ImagesPanel(Widget):
                 image.name,
                 image.tag,
                 image.image_id,
-                str(image.created),
+                image.created.isoformat(sep=" ", timespec="minutes"),
                 "{:.2f} MB".format(float(image.size_bytes) / 1000000),
             )
 

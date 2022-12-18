@@ -64,6 +64,11 @@ async def test_compose_no_style_set(mock_get_images) -> None:
 
 
 @pytest.mark.asyncio
+async def test_compose_error_getting_images(mock_get_images) -> None:
+    pass
+
+
+@pytest.mark.asyncio
 async def test_action_move_down_no_images(mock_get_images):
     mock_get_images.return_value = []
 
@@ -73,7 +78,7 @@ async def test_action_move_down_no_images(mock_get_images):
         images = app.query_one(ImagesPanel)
         images.action_move_down()
 
-    
+
 @pytest.mark.asyncio
 async def test_action_move_up_no_images(mock_get_images):
     mock_get_images.return_value = []
