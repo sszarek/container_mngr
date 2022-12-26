@@ -5,6 +5,7 @@ from textual.app import App, ComposeResult
 from src.container_mngr.components.images import ImagesPanel
 from src.container_mngr.data.models import Image
 from src.container_mngr.data import docker
+from src.container_mngr.data.errors import ContainerRuntimeAPIError
 
 
 image_a = Image(
@@ -29,7 +30,7 @@ class ImagesTestApp(App):
 
 
 @pytest.fixture
-def mock_get_images(monkeypatch):
+def mock_get_images(monkeypatch) -> Mock:
     get_images_mock = Mock()
     monkeypatch.setattr(docker, "get_images", get_images_mock)
     return get_images_mock
@@ -64,8 +65,16 @@ async def test_compose_no_style_set(mock_get_images) -> None:
 
 
 @pytest.mark.asyncio
-async def test_compose_error_getting_images(mock_get_images) -> None:
-    pass
+async def test_compose_error_getting_images(mock_get_images: Mock) -> None:
+    error = ContainerRuntimeAPIError("Error 1", inner_error=Exception("inner"))
+    mock_get_images.side_effect = error
+
+    app = ImagesTestApp()
+
+    async with app.run_test():
+        images = app.query_one(ImagesPanel)
+        child = images.children[0]
+        assert child is None
 
 
 @pytest.mark.asyncio

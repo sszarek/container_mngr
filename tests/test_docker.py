@@ -1,38 +1,37 @@
 import pytest
+from dateutil.tz import tzutc
+from datetime import datetime
 from unittest.mock import Mock
 from docker import DockerClient
 from docker.errors import APIError
 from docker.models.images import Image as DockerImage
-from src.container_mngr.data.models import ContainerRuntimeInfo, Image
-from src.container_mngr.data.docker import get_runtime_info
+from src.container_mngr.data.models import ContainerRuntimeInfo
+from src.container_mngr.data.docker import get_runtime_info, get_images
 from src.container_mngr.data.errors import ContainerRuntimeAPIError, ModelMappingError
 
 
-def patch_docker_client_info_response(monkeypatch, response):
+@pytest.fixture
+def mock_env_client(monkeypatch):
     env_client_mock = Mock()
-    env_client_mock.info = Mock(return_value=response)
-
     from_env_mock = Mock(return_value=env_client_mock)
     monkeypatch.setattr(DockerClient, "from_env", staticmethod(from_env_mock))
-
-
-def patch_docker_client_info_error(monkeypatch, error):
-    env_client_mock = Mock()
-    env_client_mock.info = Mock(side_effect=error)
-
-    from_env_mock = Mock(return_value=env_client_mock)
-    monkeypatch.setattr(DockerClient, "from_env", staticmethod(from_env_mock))
+    return env_client_mock
 
 
 @pytest.fixture
-def mock_get_info(monkeypatch):
+def mock_get_info(mock_env_client) -> Mock:
     info_mock = Mock()
-    env_clien_mock = Mock()
-    env_clien_mock.info = info_mock
+    mock_env_client.info = info_mock
 
-    from_env_mock = Mock(return_value=env_clien_mock)
-    monkeypatch.setattr(DockerClient, "from_env", staticmethod(from_env_mock))
     return info_mock
+
+
+@pytest.fixture
+def mock_images(mock_env_client) -> Mock:
+    images_mock = Mock()
+    mock_env_client.images = images_mock
+
+    return images_mock
 
 
 def test_runtime_info_returns_valid_response(mock_get_info: Mock):
@@ -82,7 +81,6 @@ def test_runtime_info_invalid_response(mock_get_info: Mock):
     }
 
     mock_get_info.return_value = runtime_dict
-    # patch_docker_client_info_response(monkeypatch, runtime_dict)
 
     with pytest.raises(ModelMappingError) as err:
         get_runtime_info()
@@ -93,15 +91,30 @@ def test_runtime_info_invalid_response(mock_get_info: Mock):
     )
 
 
-def test_get_images_returns_valid_response():
+def test_get_images_returns_valid_response(mock_images):
     images_dict = [
-        DockerImage(attrs={
-            "RepoTags": ["redis:latest"],
-            "Id": "sha:3358aea34e8c871cc2ecec590dcefcf0945e76ec3f82071f30156ed1be97a5fb",
-            "Created": "2022-11-15T14:41:42.98180605Z",
-            "Size": 116950664
-        })
+        DockerImage(
+            attrs={
+                "RepoTags": ["redis:latest"],
+                "Id": "sha:3358aea34e8c871cc2ecec590dcefcf0945e76ec3f82071f30156ed1be97a5fb",  # noqa E501
+                "Created": "2022-11-15T14:41:42.98180605Z",
+                "Size": 116950664,
+            }
+        )
     ]
 
-    # TODO add proper assertion
-    assert images_dict is not None
+    mock_images.list = Mock(return_value=images_dict)
+
+    actual = get_images()
+
+    assert len(actual) == 1
+    assert actual[0].created == datetime(
+        2022, 11, 15, 14, 41, 42, 981806, tzinfo=tzutc()
+    )
+    assert (
+        actual[0].image_id
+        == "3358aea34e8c871cc2ecec590dcefcf0945e76ec3f82071f30156ed1be97a5fb"
+    )  # noqa E501
+    assert actual[0].name == "redis"
+    assert actual[0].size_bytes == 116950664
+    assert actual[0].tag == "latest"
