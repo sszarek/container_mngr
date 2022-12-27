@@ -74,7 +74,8 @@ async def test_compose_error_getting_images(mock_get_images: Mock) -> None:
     async with app.run_test():
         images = app.query_one(ImagesPanel)
         child = images.children[0]
-        assert child is None
+        assert child is not None
+        assert child.renderable.renderable.plain == "Error 1: inner"
 
 
 @pytest.mark.asyncio
