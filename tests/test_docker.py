@@ -112,8 +112,7 @@ def test_get_images_returns_valid_response(mock_images):
         2022, 11, 15, 14, 41, 42, 981806, tzinfo=tzutc()
     )
     assert (
-        actual[0].image_id
-        == "3358aea34e8c871cc2ecec590dcefcf0945e76ec3f82071f30156ed1be97a5fb"
+        actual[0].image_id == "3358aea3"
     )  # noqa E501
     assert actual[0].name == "redis"
     assert actual[0].size_bytes == 116950664
