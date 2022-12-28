@@ -3,6 +3,7 @@ from textual.app import ComposeResult
 from textual.widget import Widget
 from textual.widgets import Static
 from rich import box
+from rich.console import RenderableType
 from rich.panel import Panel
 from rich.table import Table
 from rich.text import Text
@@ -35,17 +36,14 @@ class ImagesPanel(Widget):
                     "{:.2f} MB".format(float(image.size_bytes) / 1000000),
                 )
 
-            self._content = Static(Panel(self._image_table, title="Images"))
+            self._content = self._render_in_panel(self._image_table)
             yield self._content
         except ContainerRuntimeAPIError as ex:
-            yield Static(
-                Panel(
-                    Text(
-                        text=f"{ex}: {ex.inner_error}",
-                        justify="center",
-                        style="bold red",
-                    ),
-                    title="Images",
+            yield self._render_in_panel(
+                Text(
+                    text=f"{ex}: {ex.inner_error}",
+                    justify="center",
+                    style="bold red",
                 )
             )
 
@@ -84,3 +82,6 @@ class ImagesPanel(Widget):
 
     def _remove_row_highlight(self, row_idx: int) -> None:
         self._image_table.rows[row_idx].style = None
+
+    def _render_in_panel(self, content: RenderableType) -> Widget:
+        return Static(Panel(content, title="Images"))
