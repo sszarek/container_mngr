@@ -8,7 +8,27 @@ from rich.panel import Panel
 from rich.table import Table
 from rich.text import Text
 from ..data import docker
+from ..data.models import Image
 from ..data.errors import ContainerRuntimeAPIError
+from ..components.table_wrapper import TableDataProvider
+
+
+class ImagesTableDataProvider(TableDataProvider):
+    def get_headers(self) -> list[str]:
+        return ["Repository", "Tag", "Image Id", "Created", "Size"]
+
+    def get_rows(self) -> list:
+        images = docker.get_images()
+        return list(map(self._map_image, images))
+
+    def _map_image(self, image: Image):
+        return [
+            image.name,
+            image.tag,
+            image.image_id,
+            image.created.isoformat(sep=" ", timespec="minutes"),
+            "{:.2f} MB".format(float(image.size_bytes) / 1000000),
+        ]
 
 
 class ImagesPanel(Widget):
@@ -83,5 +103,5 @@ class ImagesPanel(Widget):
     def _remove_row_highlight(self, row_idx: int) -> None:
         self._image_table.rows[row_idx].style = None
 
-    def _render_in_panel(self, content: RenderableType) -> Widget:
+    def _render_in_panel(self, content: RenderableType) -> Static:
         return Static(Panel(content, title="Images"))
