@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 from textual.widgets import Static
 from rich import box
+from rich.console import RenderableType
 from rich.table import Table
 from rich.text import Text
 
@@ -20,7 +21,27 @@ class TableWrapper(Static):
     _inner_table: Table
     _cur_idx: int = -1
 
-    def __init__(self, data_provider: TableDataProvider):
+    def __init__(
+        self,
+        data_provider: TableDataProvider,
+        renderable: RenderableType = "",
+        *,
+        expand: bool = False,
+        shrink: bool = False,
+        markup: bool = True,
+        name: str | None = None,
+        id: str | None = None,
+        classes: str | None = None,
+    ) -> None:
+        super().__init__(
+            renderable,
+            expand=expand,
+            shrink=shrink,
+            markup=markup,
+            name=name,
+            id=id,
+            classes=classes,
+        )
         self._data_provider = data_provider
 
     def on_mount(self) -> None:
@@ -58,8 +79,7 @@ class TableWrapper(Static):
             self._cur_idx += 1
 
         self._highlight_row(self._cur_idx)
-        self.refresh()
-        # self.update(table) ?
+        self.update(self._inner_table)
 
     def action_move_up(self) -> None:
         if self._inner_table.row_count == 0:
@@ -74,8 +94,7 @@ class TableWrapper(Static):
             self._cur_idx -= 1
 
         self._highlight_row(self._cur_idx)
-        self.refresh()
-        # self.update(table) ?
+        self.update(self._inner_table)
 
     def _highlight_row(self, row_idx: int) -> None:
         self._inner_table.rows[row_idx].style = "black on white"
