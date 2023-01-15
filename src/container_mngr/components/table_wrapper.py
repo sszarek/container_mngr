@@ -56,6 +56,8 @@ class TableWrapper(Static):
             for row in self._data_provider.get_rows():
                 self._inner_table.add_row(*row)
 
+            self.styles.border = ("heavy", "white")
+            self.styles.outline = ("round", "white")
             self.update(self._inner_table)
         except Exception as ex:
             self.update(

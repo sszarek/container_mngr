@@ -1,7 +1,8 @@
 from typing import Final
 from textual.app import ComposeResult
 from textual.widget import Widget
-from textual.widgets import Static
+from textual.widgets import Static, Label
+from textual.containers import Container
 from ..data import docker
 from ..data.models import Image
 from ..components.table_wrapper import TableDataProvider, TableWrapper
@@ -36,9 +37,9 @@ class ImagesPanel(Widget):
         self._image_data_provider = ImagesTableDataProvider()
         self._image_table = TableWrapper(self._image_data_provider)
 
-        self.styles.border = ("heavy", "white")
-        self.styles.outline = ("round", "white")
-        yield self._image_table
+        yield Container(
+            Label("Containers", classes="label-center-top"), self._image_table
+        )
 
     def action_move_down(self):
         self._image_table.action_move_down()
