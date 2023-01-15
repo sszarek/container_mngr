@@ -37,9 +37,7 @@ class ImagesPanel(Widget):
         self._image_data_provider = ImagesTableDataProvider()
         self._image_table = TableWrapper(self._image_data_provider)
 
-        yield Container(
-            Label("Containers", classes="label-center-top"), self._image_table
-        )
+        yield Container(Label("Images", classes="label-center-top"), self._image_table)
 
     def action_move_down(self):
         self._image_table.action_move_down()
