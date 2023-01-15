@@ -1,7 +1,6 @@
-from typing import Final
 from textual.app import ComposeResult
 from textual.widget import Widget
-from textual.widgets import Static, Label
+from textual.widgets import Label
 from textual.containers import Container
 from ..data import docker
 from ..data.models import Image
@@ -29,9 +28,6 @@ class ImagesTableDataProvider(TableDataProvider):
 class ImagesPanel(Widget):
     _image_data_provider: ImagesTableDataProvider
     _image_table: TableWrapper
-    _content: Static
-    _cur_idx: int = -1
-    _HEADERS: Final = ["Repository", "Tag", "Image Id", "Created", "Size"]
 
     def compose(self) -> ComposeResult:
         self._image_data_provider = ImagesTableDataProvider()
