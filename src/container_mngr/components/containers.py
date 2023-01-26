@@ -37,3 +37,9 @@ class ContainersPanel(Widget):
         yield containers.Container(
             Label("Containers", classes="label-center-top"), self._container_table
         )
+
+    def action_move_down(self):
+        self._container_table.action_move_down()
+
+    def action_move_up(self):
+        self._container_table.action_move_up()
