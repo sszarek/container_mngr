@@ -1,3 +1,9 @@
+## 0.3.0 (2023-01-26)
+
+### Feat
+
+- handle navigation in containers (#2)
+
 ## 0.2.0 (2022-12-03)
 
 ### Feat
