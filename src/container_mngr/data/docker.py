@@ -1,3 +1,4 @@
+from dateutil.parser import isoparse
 from docker import DockerClient
 from docker.models.images import Image as DockerImage
 from docker.models.containers import Container as DockerContainer
@@ -75,11 +76,12 @@ def get_containers() -> list[Container]:
 
 def _map_image(raw_image: DockerImage) -> Image:
     repo_tags = raw_image.attrs.get("RepoTags")[0].split(":")
+    image_id = "".join(raw_image.short_id.split(":")[-1:])
     return Image(
         name=repo_tags[0],
         tag=repo_tags[1],
-        image_id=raw_image.short_id,
-        created=raw_image.attrs.get("Created"),
+        image_id=image_id,
+        created=isoparse(raw_image.attrs.get("Created")),
         size_bytes=raw_image.attrs.get("Size"),
     )
 

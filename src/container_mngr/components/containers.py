@@ -1,48 +1,39 @@
 from textual.app import ComposeResult
 from textual.widget import Widget
-from textual.widgets import Static
-from rich.table import Table
-from rich.panel import Panel
-from rich.text import Text
-from rich import box
-from ..data.docker import get_containers
+from textual.widgets import Label
+from textual import containers
+from ..data import docker
+from ..data.models import Container
+from ..components.table_wrapper import TableDataProvider, TableWrapper
+
+
+class ContainersTableDataProvider(TableDataProvider):
+    def get_headers(self) -> list[str]:
+        return ["Container ID", "Image", "Command", "Status", "Ports", "Names"]
+
+    def get_rows(self) -> list:
+        containers = docker.get_containers()
+        return list(map(self._map_containers, containers))
+
+    def _map_containers(self, container: Container) -> list[str]:
+        return [
+            container.id,
+            container.image,
+            container.command,
+            container.status,
+            ", ".join([f"{port.container}:{port.host}" for port in container.ports]),
+            container.name,
+        ]
 
 
 class ContainersPanel(Widget):
-    _HEADERS = ["Container ID", "Image", "Command", "Status", "Ports", "Names"]
+    _container_data_provider: ContainersTableDataProvider
+    _container_table: TableWrapper
 
     def compose(self) -> ComposeResult:
-        containers = get_containers()
+        self._container_data_provider = ContainersTableDataProvider()
+        self._container_table = TableWrapper(self._container_data_provider)
 
-        renderable = (
-            self._render_no_containers_info()
-            if len(containers) == 0
-            else self._render_containers_table(containers)
+        yield containers.Container(
+            Label("Containers", classes="label-center-top"), self._container_table
         )
-
-        yield Static(Panel(renderable, title="Containers"))
-
-    def _render_no_containers_info(self):
-        return Text(text="No containers running", style="bold blue", justify="center")
-
-    def _render_containers_table(self, containers):
-        container_table = Table(
-            box=box.SIMPLE_HEAVY, show_header=True, header_style="bold bright_blue"
-        )
-
-        for header in self._HEADERS:
-            container_table.add_column(header)
-
-        for container in containers:
-            container_table.add_row(
-                container.id,
-                container.image,
-                container.command,
-                container.status,
-                ", ".join(
-                    [f"{port.container}:{port.host}" for port in container.ports]
-                ),
-                container.name,
-            )
-
-        return container_table

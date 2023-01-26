@@ -1,32 +1,42 @@
 from textual.app import ComposeResult
 from textual.widget import Widget
-from textual.widgets import Static
-from rich import box
-from rich.panel import Panel
-from rich.table import Table
-from ..data.docker import get_images
+from textual.widgets import Label
+from textual.containers import Container
+from ..data import docker
+from ..data.models import Image
+from ..components.table_wrapper import TableDataProvider, TableWrapper
+
+
+class ImagesTableDataProvider(TableDataProvider):
+    def get_headers(self) -> list[str]:
+        return ["Repository", "Tag", "Image Id", "Created", "Size"]
+
+    def get_rows(self) -> list:
+        images = docker.get_images()
+        return list(map(self._map_image, images))
+
+    def _map_image(self, image: Image):
+        return [
+            image.name,
+            image.tag,
+            image.image_id,
+            image.created.isoformat(sep=" ", timespec="minutes"),
+            "{:.2f} MB".format(float(image.size_bytes) / 1000000),
+        ]
 
 
 class ImagesPanel(Widget):
-    _HEADERS = ["Repository", "Tag", "Image Id", "Created", "Size"]
+    _image_data_provider: ImagesTableDataProvider
+    _image_table: TableWrapper
 
     def compose(self) -> ComposeResult:
-        images = get_images()
+        self._image_data_provider = ImagesTableDataProvider()
+        self._image_table = TableWrapper(self._image_data_provider)
 
-        image_table = Table(
-            box=box.SIMPLE_HEAVY, show_header=True, header_style="bold bright_blue"
-        )
+        yield Container(Label("Images", classes="label-center-top"), self._image_table)
 
-        for header in self._HEADERS:
-            image_table.add_column(header)
+    def action_move_down(self):
+        self._image_table.action_move_down()
 
-        for image in images:
-            image_table.add_row(
-                image.name,
-                image.tag,
-                image.image_id,
-                str(image.created),
-                "{:.2f} MB".format(float(image.size_bytes) / 1000000),
-            )
-
-        yield Static(Panel(image_table, title="Images"))
+    def action_move_up(self):
+        self._image_table.action_move_up()

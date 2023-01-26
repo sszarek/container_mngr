@@ -23,8 +23,18 @@ class RuntimeScreen(BaseScreen):
 
 
 class ImagesScreen(BaseScreen):
+    _panel: ImagesPanel
+    BINDINGS = [("down", "move_down", "Move down"), ("up", "move_up", "Move up")]
+
     def compose_screen(self) -> ComposeResult:
-        yield ImagesPanel()
+        self._panel = ImagesPanel()
+        yield self._panel
+
+    def action_move_down(self) -> None:
+        self._panel.action_move_down()
+
+    def action_move_up(self) -> None:
+        self._panel.action_move_up()
 
 
 class ContainersScreen(BaseScreen):
