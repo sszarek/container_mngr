@@ -1,7 +1,6 @@
 from textual.app import ComposeResult
 from textual.widget import Widget
 from textual.widgets import Label
-from textual import containers
 from ..data import docker
 from ..data.models import Container
 from ..components.table_wrapper import TableDataProvider, TableWrapper
@@ -34,9 +33,8 @@ class ContainersPanel(Widget):
         self._container_data_provider = ContainersTableDataProvider()
         self._container_table = TableWrapper(self._container_data_provider)
 
-        yield containers.Container(
-            Label("Containers", classes="label-center-top"), self._container_table
-        )
+        yield Label("Containers", classes="label-center-top")
+        yield self._container_table
 
     def action_move_down(self):
         self._container_table.action_move_down()

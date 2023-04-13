@@ -1,8 +1,8 @@
 import pytest
 from unittest.mock import Mock
 from textual.app import App, ComposeResult
-from src.container_mngr.components.table_wrapper import TableWrapper, TableDataProvider
-from src.container_mngr.data.errors import ContainerRuntimeAPIError
+from container_mngr.components.table_wrapper import TableWrapper, TableDataProvider
+from container_mngr.data.errors import ContainerRuntimeAPIError
 
 
 class TableWrapperTestProvider(TableDataProvider):

@@ -1,10 +1,10 @@
 import pytest
 from datetime import datetime
 from unittest.mock import Mock
-from src.container_mngr.components.images import ImagesTableDataProvider
-from src.container_mngr.data import docker
-from src.container_mngr.data.errors import ContainerRuntimeAPIError
-from src.container_mngr.data.models import Image
+from container_mngr.components.images import ImagesTableDataProvider
+from container_mngr.data import docker
+from container_mngr.data.errors import ContainerRuntimeAPIError
+from container_mngr.data.models import Image
 
 
 image_a = Image(
