@@ -1,6 +1,5 @@
 from textual.app import ComposeResult
 from textual.widget import Widget
-from textual.widgets import Label
 from ..data import docker
 from ..data.models import Image
 from ..components.table_wrapper import TableDataProvider, TableWrapper
@@ -32,7 +31,6 @@ class ImagesPanel(Widget):
         self._image_data_provider = ImagesTableDataProvider()
         self._image_table = TableWrapper(self._image_data_provider)
 
-        yield Label("Images", classes="label-center-top")
         yield self._image_table
 
     def action_move_down(self):

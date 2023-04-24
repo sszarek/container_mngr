@@ -17,7 +17,7 @@ class TableWrapperTestApp(App):
     _provider: TableDataProvider
 
     def __init__(self, provider: TableDataProvider):
-        super().__init__(None, None, None)
+        super().__init__(None, None, False)
         self._provider = provider
 
     def compose(self) -> ComposeResult:

@@ -1,7 +1,6 @@
 from textual.app import ComposeResult
 from textual.widget import Widget
 from textual.widgets import Static
-from rich.panel import Panel
 from rich.table import Table
 from rich.text import Text
 from ..data.docker import get_runtime_info
@@ -24,7 +23,7 @@ class RuntimePanel(Widget):
     def compose(self) -> ComposeResult:
         content = self._render_content()
 
-        yield Static(Panel(content, title="Runtime"))
+        yield Static(content)
 
     def _render_content(self):
         try:
@@ -34,18 +33,16 @@ class RuntimePanel(Widget):
             return self._render_error(ex)
 
     def _render_runtime_info(self, runtime_info: ContainerRuntimeInfo):
-        table = Table(
-            box=None, show_header=False, expand=False, pad_edge=False, show_edge=False
-        )
+        table = Table(box=None, show_header=False, expand=False, pad_edge=False)
 
-        self._render_table_row(table, "CPU Count", str(runtime_info.cpu_count))
-        self._render_table_row(table, "Architecture", runtime_info.cpu_architecture),
-        self._render_table_row(table, "Name", runtime_info.name)
-        self._render_table_row(table, "Runtime Version", runtime_info.server_version)
-        self._render_table_row(table, "Kernel Version", runtime_info.kernel_version)
-        self._render_table_row(table, "OS Type", runtime_info.os_type)
-        self._render_table_row(table, "Operating System", runtime_info.os)
-        self._render_table_row(table, "OS Version", runtime_info.os_version)
+        self._render_table_row(table, "CPU Count:", str(runtime_info.cpu_count))
+        self._render_table_row(table, "Architecture:", runtime_info.cpu_architecture),
+        self._render_table_row(table, "Name:", runtime_info.name)
+        self._render_table_row(table, "Runtime Version:", runtime_info.server_version)
+        self._render_table_row(table, "Kernel Version:", runtime_info.kernel_version)
+        self._render_table_row(table, "OS Type:", runtime_info.os_type)
+        self._render_table_row(table, "Operating System:", runtime_info.os)
+        self._render_table_row(table, "OS Version:", runtime_info.os_version)
 
         return table
 
@@ -56,4 +53,4 @@ class RuntimePanel(Widget):
         )
 
     def _render_table_row(self, table: Table, header: str, value: str):
-        table.add_row(Text(text=header, style="bold bright_blue"), Text(text=value))
+        table.add_row(Text(text=header, style="bold white"), Text(text=value))

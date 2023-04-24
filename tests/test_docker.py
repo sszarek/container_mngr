@@ -5,9 +5,9 @@ from unittest.mock import Mock
 from docker import DockerClient
 from docker.errors import APIError
 from docker.models.images import Image as DockerImage
-from src.container_mngr.data.models import ContainerRuntimeInfo
-from src.container_mngr.data.docker import get_runtime_info, get_images
-from src.container_mngr.data.errors import ContainerRuntimeAPIError, ModelMappingError
+from container_mngr.data.models import ContainerRuntimeInfo
+from container_mngr.data.docker import get_runtime_info, get_images
+from container_mngr.data.errors import ContainerRuntimeAPIError, ModelMappingError
 
 
 @pytest.fixture
