@@ -51,7 +51,7 @@ def test_runtime_info_returns_valid_response(mock_get_info: Mock):
     actual = get_runtime_info()
 
     assert actual == ContainerRuntimeInfo(
-        cpu_count=runtime_dict["NCPU"],
+        cpu_count=int(runtime_dict["NCPU"]),
         cpu_architecture=runtime_dict["Architecture"],
         kernel_version=runtime_dict["KernelVersion"],
         name=runtime_dict["Name"],

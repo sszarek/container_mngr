@@ -1,5 +1,6 @@
 from textual.app import ComposeResult
 from textual.widget import Widget
+from textual.widgets import DataTable, Static
 from ..data import docker
 from ..data.models import Container
 from ..components.table_wrapper import TableDataProvider, TableWrapper
@@ -32,10 +33,12 @@ class ContainersPanel(Widget):
         self._container_data_provider = ContainersTableDataProvider()
         self._container_table = TableWrapper(self._container_data_provider)
 
-        yield self._container_table
+        # yield self._container_table
+        yield Static("Hello world")
 
-    def action_move_down(self):
-        self._container_table.action_move_down()
+    def on_mount(self):
+        pass
+        # table = self.query_one(DataTable)
 
-    def action_move_up(self):
-        self._container_table.action_move_up()
+        # if table is not None:
+        #     table.add_columns(*self._container_data_provider.get_headers())

@@ -44,9 +44,3 @@ class ContainersScreen(BaseScreen):
     def compose_screen(self) -> ComposeResult:
         self._panel = ContainersPanel()
         yield self._panel
-
-    def action_move_down(self) -> None:
-        self._panel.action_move_down()
-
-    def action_move_up(self) -> None:
-        self._panel.action_move_up()

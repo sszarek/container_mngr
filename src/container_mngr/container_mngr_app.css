@@ -12,6 +12,7 @@ ImagesPanel {
 
 ContainersPanel {
     height: auto;
+    width: auto;
 }
 
 .label-center-top {
