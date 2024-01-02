@@ -2,9 +2,9 @@ from dateutil.parser import isoparse
 from docker import DockerClient
 from docker.models.images import Image as DockerImage
 from docker.models.containers import Container as DockerContainer
-from docker.errors import APIError
+from docker.errors import APIError, DockerException
 from .models import ContainerRuntimeInfo, Image, Container, Port
-from .errors import ContainerRuntimeAPIError, ModelMappingError
+from .errors import ContainerRuntimeAPIError, ModelMappingError, ContainerRuntimerPermissionsError
 
 required_info_keys = [
     "NCPU",
@@ -61,6 +61,8 @@ def get_images() -> list[Image]:
         raise ContainerRuntimeAPIError(
             "Error while pulling list of images from Docker API", ex
         )
+    except DockerException as ex:
+        raise ContainerRuntimerPermissionsError(ex)
 
 
 def get_containers() -> list[Container]:
@@ -72,7 +74,8 @@ def get_containers() -> list[Container]:
         raise ContainerRuntimeAPIError(
             "Error while pulling list of containers from Docker API", ex
         )
-
+    except DockerException as ex:
+        raise ContainerRuntimerPermissionsError(ex)
 
 def _map_image(raw_image: DockerImage) -> Image:
     repo_tags = raw_image.attrs.get("RepoTags")[0].split(":")
